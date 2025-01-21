@@ -20,6 +20,7 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { Select, SelectContent, SelectTrigger, SelectValue } from './ui/select'
+import { Textarea } from './ui/textarea'
 
 interface CustomProps {
   control: Control<any>,
@@ -62,6 +63,17 @@ const RenderField = ({ field, props }: {field: any; props: CustomProps}) => {
           </FormControl>
         </div>
       )
+    case FormFieldType.TEXTAREA:
+      return (
+        <FormControl>
+          <Textarea
+            placeholder={placeholder}
+            {...field}
+            className='shad-textArea text-white'
+            disabled={props.disabled}
+          />
+        </FormControl>
+      )
     case FormFieldType.PHONE_INPUT:
       return (
         <FormControl>
@@ -99,24 +111,24 @@ const RenderField = ({ field, props }: {field: any; props: CustomProps}) => {
           </FormControl>
         </div>
       )
-      case FormFieldType.SELECT:
-        return (
-          <FormControl>
-            <Select
-              onValueChange={field.onChange}
-              defaultValue={field.value}
-            >
-              <FormControl>
-                <SelectTrigger className='shad-select-trigger text-white'>
-                  <SelectValue placeholder={placeholder} className='text-white'/>
-                </SelectTrigger>
-              </FormControl>
-                <SelectContent className='shad-select-content text-white'>
-                  {props.children}
-                </SelectContent>
-            </Select>
-          </FormControl>
-        )
+    case FormFieldType.SELECT:
+      return (
+        <FormControl>
+          <Select
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+          >
+            <FormControl>
+              <SelectTrigger className='shad-select-trigger text-white'>
+                <SelectValue placeholder={placeholder} className='text-white'/>
+              </SelectTrigger>
+            </FormControl>
+              <SelectContent className='shad-select-content text-white'>
+                {props.children}
+              </SelectContent>
+          </Select>
+        </FormControl>
+      )
     case FormFieldType.SKELETON:
       return (
         renderSkeleton ? renderSkeleton(field) : null
