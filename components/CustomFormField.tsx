@@ -16,6 +16,10 @@ import { FormFieldType } from './form/PatientForm'
 import Image from 'next/image'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import { Select, SelectContent, SelectTrigger, SelectValue } from './ui/select'
 
 interface CustomProps {
   control: Control<any>,
@@ -33,7 +37,7 @@ interface CustomProps {
 }
 
 const RenderField = ({ field, props }: {field: any; props: CustomProps}) => {
-  const { fieldType, iconSrc, iconAlt, placeholder, dateFormat, showTimeSelect } = props
+  const { fieldType, iconSrc, iconAlt, placeholder, dateFormat, showTimeSelect, renderSkeleton } = props
 
   switch (fieldType) {
     case FormFieldType.INPUT:
@@ -71,6 +75,51 @@ const RenderField = ({ field, props }: {field: any; props: CustomProps}) => {
             className='input-phone text-[#E8E9E9] bg-dark-500'
           />
         </FormControl>
+      )
+    case FormFieldType.DATE_PICKER:
+      return (
+        <div className='flex rounded-md border border-dark-500 bg-dark-400 text-white'>
+          <Image
+            src="/assets/icons/calendar.svg"
+            height={24}
+            width={24}
+            alt='calendar'
+            className='ml-2'
+          />
+
+          <FormControl>
+            <DatePicker
+              selected={field.value}
+              onChange={(date) => field.onChange(date)}
+              dateFormat={dateFormat ?? 'MM/DD/YYYY'}
+              showTimeSelect={showTimeSelect ?? false}
+              timeInputLabel='Time:'
+              wrapperClassName='date-picker'
+            />
+          </FormControl>
+        </div>
+      )
+      case FormFieldType.SELECT:
+        return (
+          <FormControl>
+            <Select
+              onValueChange={field.onChange}
+              defaultValue={field.value}
+            >
+              <FormControl>
+                <SelectTrigger className='shad-select-trigger text-white'>
+                  <SelectValue placeholder={placeholder} className='text-white'/>
+                </SelectTrigger>
+              </FormControl>
+                <SelectContent className='shad-select-content text-white'>
+                  {props.children}
+                </SelectContent>
+            </Select>
+          </FormControl>
+        )
+    case FormFieldType.SKELETON:
+      return (
+        renderSkeleton ? renderSkeleton(field) : null
       )
     default:
       break;
