@@ -119,7 +119,7 @@ const RenderField = ({ field, props }: {field: any; props: CustomProps}) => {
             defaultValue={field.value}
           >
             <FormControl>
-              <SelectTrigger className='shad-select-trigger text-white'>
+              <SelectTrigger className='shad-select-trigger text-dark-700'>
                 <SelectValue placeholder={placeholder} className='text-white'/>
               </SelectTrigger>
             </FormControl>
