@@ -38,6 +38,20 @@ export const getUser = async (userId: string) => {
   }
 }
 
+export const getPatient = async (userId: string) => {
+  try {
+    const patients = await databases.listDocuments(
+      process.env.DATABASE_ID! || "678d76bb001a4af7d985",
+      process.env.PATIENT_COLLECTION_ID! || "678d79c800227732cdd4",
+      [Query.equal('userId', [userId])]
+    );
+
+    return parseStringify(patients.documents[0]);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const registerPatient = async ({ identificationDocument, ...patient}: RegisterUserParams) => {
   try {
     let file;
